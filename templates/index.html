@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pneumonia Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Pneumonia Detection</h1>
+    <form id="upload-form" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*">
+        <button type="submit">Upload</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('upload-form').onsubmit = async function(e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+            let response = await fetch('/predict', {
+                method: 'POST',
+                body: formData
+            });
+            let result = await response.json();
+            document.getElementById('result').innerText = result.result;
+        };
+    </script>
+</body>
+</html>
+
